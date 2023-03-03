@@ -1,6 +1,7 @@
 package repos
 
 import (
+	"errors"
 	"time"
 
 	"github.com/estifanos-neway/event-space-server/src/commons"
@@ -46,4 +47,32 @@ func signJwt(claims jwt.Claims, key string) (string, error) {
 		return "", err
 	}
 	return signedToken, nil
+}
+
+func verifyEmailVerificationToken(tokenString string) (*types.User, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &emailVerificationClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(env.Env.JWT_SECRETE), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if claims, ok := token.Claims.(*emailVerificationClaims); ok && token.Valid {
+		return &claims.User, nil
+	} else {
+		return nil, errors.New(invalidToken)
+	}
+}
+
+func verifyRefreshToken(tokenString string) (string, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &sessionRefreshClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(env.Env.JWT_REFRESH_SECRETE), nil
+	})
+	if err != nil {
+		return "", err
+	}
+	if claims, ok := token.Claims.(*sessionRefreshClaims); ok && token.Valid {
+		return claims.UserId, nil
+	} else {
+		return "", errors.New(invalidToken)
+	}
 }

@@ -37,8 +37,3 @@ func (this SignUpInput) IsValid() error {
 	}
 	return nil
 }
-
-type UserLogin struct {
-	AccessToken  string `json:"accessToken"`
-	RefreshToken string `json:"refreshToken"`
-}

@@ -2,6 +2,7 @@ package repos
 
 import (
 	"crypto/sha256"
+	"fmt"
 	"log"
 
 	"github.com/estifanos-neway/event-space-server/src/commons"
@@ -9,26 +10,17 @@ import (
 	types "github.com/estifanos-neway/event-space-server/src/types"
 )
 
-func SignupRepo(signUpInput types.SignUpInput) types.SimpleResponse {
+func SignupRepo(signUpInput types.SignUpInput) (int, string) {
 	// validate correctness
 	if err := signUpInput.IsValidSignInInput(); err != nil {
-		return types.SimpleResponse{
-			Code:    400,
-			Message: err.Error(),
-		}
+		return 400, err.Error()
 	}
 	// validate uniqueness
 	if existingUser, err := getUserByEmail(signUpInput.Email); err != nil {
 		log.Println("usersByEmail", err)
-		return types.SimpleResponse{
-			Code:    500,
-			Message: commons.InternalError,
-		}
+		return 500, InternalError
 	} else if existingUser.Email == signUpInput.Email {
-		return types.SimpleResponse{
-			Code:    400,
-			Message: commons.InternalError,
-		}
+		return 409, emailAlreadyExist
 	}
 	// send email
 	passwordHash := sha256.Sum256([]byte(signUpInput.Password))
@@ -40,23 +32,15 @@ func SignupRepo(signUpInput types.SignUpInput) types.SimpleResponse {
 	emailVerificationToken, err := signEmailVerificationToken(user)
 	if err != nil {
 		log.Println("signEmailVerificationToken", err)
-		return types.SimpleResponse{
-			Code:    500,
-			Message: commons.InternalError,
-		}
+		return 500, InternalError
 	}
+	fmt.Println(emailVerificationToken)
 	subject := "Email Verification"
 	content := env.Env.EMAIL_VERIFICATION_URL + emailVerificationToken
 	if err := commons.SendEmail(signUpInput.Email, &content, nil, nil, &subject, nil); err != nil {
 		log.Println("SendEmail", err)
-		return types.SimpleResponse{
-			Code:    500,
-			Message: commons.InternalError,
-		}
+		return 500, InternalError
 	}
 	// return token
-	return types.SimpleResponse{
-		Code:    200,
-		Message: commons.Ok,
-	}
+	return 200, commons.Ok
 }

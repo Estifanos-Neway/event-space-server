@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/estifanos-neway/event-space-server/src/commons"
 	"github.com/estifanos-neway/event-space-server/src/repos"
 	"github.com/estifanos-neway/event-space-server/src/types"
 	"github.com/gin-gonic/gin"
@@ -11,9 +12,9 @@ import (
 func SignUpHandler(c *gin.Context) {
 	var signUpInput types.SignUpInput
 	if err := c.BindJSON(&signUpInput); err != nil {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Invalid_Sign_Up_Input"})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": commons.Invalid_Input})
 		return
 	}
-	response := repos.SignupRepo(signUpInput)
-	c.IndentedJSON(response.Code, gin.H{"message": response.Message})
+	code, message := repos.SignupRepo(signUpInput)
+	c.IndentedJSON(code, gin.H{"message": message})
 }
