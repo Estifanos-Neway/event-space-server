@@ -27,7 +27,9 @@ func signAccessToken(userId string) (string, error) {
 func signRefreshToken(userId string) (string, error) {
 	claims := sessionRefreshClaims{
 		userId,
-		jwt.RegisteredClaims{},
+		jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(commons.RefreshTokenExpiresAfter)),
+		},
 	}
 	return signJwt(claims, env.Env.JWT_REFRESH_SECRETE)
 }

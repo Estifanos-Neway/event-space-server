@@ -12,3 +12,4 @@ const Not_Found = "Not_Found"
 
 // jwt tokens
 const AccessTokenExpiresAfter time.Duration = 20 * time.Minute
+const RefreshTokenExpiresAfter time.Duration = 1440 * time.Hour
