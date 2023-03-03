@@ -1,2 +1,2 @@
-# event-space-server
+# Event Space - Server
 The server side program for Event Space.
