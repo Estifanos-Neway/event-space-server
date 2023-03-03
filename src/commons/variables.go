@@ -8,6 +8,7 @@ var MinPasswordLength int = 6
 const No_Content = "No_Content"
 const Ok = "OK"
 const Invalid_Input = "Invalid_Input"
+const Not_Found = "Not_Found"
 
 // jwt tokens
 const AccessTokenExpiresAfter time.Duration = 20 * time.Minute

@@ -18,6 +18,7 @@ func main() {
 	router.Static("/static", "./public")
 	router.POST("/signup", handlers.SignUpHandler)
 	router.POST("/verify-signup", handlers.VerifySignUpHandler)
+	router.POST("/signin", handlers.SignInHandler)
 	router.POST("/refresh", handlers.RefreshHandler)
 
 	router.Run(":8080")

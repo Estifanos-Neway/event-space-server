@@ -28,7 +28,7 @@ type SignUpInput struct {
 	SignInInput
 }
 
-func (this SignUpInput) IsValid() error {
+func (this SignUpInput) IsValidSignUpInput() error {
 	if err := this.IsValidSignInInput(); err != nil {
 		return err
 	}

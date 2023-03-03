@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/estifanos-neway/event-space-server/src/commons"
 	"github.com/estifanos-neway/event-space-server/src/repos"
@@ -15,6 +16,7 @@ func SignUpHandler(c *gin.Context) {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": commons.Invalid_Input})
 		return
 	}
-	code, message := repos.SignupRepo(signUpInput)
+	signUpInput.Email = strings.ToLower(signUpInput.Email)
+	code, message := repos.SignUpRepo(signUpInput)
 	c.IndentedJSON(code, gin.H{"message": message})
 }

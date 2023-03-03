@@ -1,7 +1,6 @@
 package repos
 
 import (
-	"crypto/sha256"
 	"fmt"
 	"log"
 
@@ -10,9 +9,9 @@ import (
 	types "github.com/estifanos-neway/event-space-server/src/types"
 )
 
-func SignupRepo(signUpInput types.SignUpInput) (int, string) {
+func SignUpRepo(signUpInput types.SignUpInput) (int, string) {
 	// validate correctness
-	if err := signUpInput.IsValidSignInInput(); err != nil {
+	if err := signUpInput.IsValidSignUpInput(); err != nil {
 		return 400, err.Error()
 	}
 	// validate uniqueness
@@ -23,11 +22,11 @@ func SignupRepo(signUpInput types.SignUpInput) (int, string) {
 		return 409, emailAlreadyExist
 	}
 	// send email
-	passwordHash := sha256.Sum256([]byte(signUpInput.Password))
+	passwordHash := commons.Hash(signUpInput.Password)
 	user := types.User{
 		Email:        signUpInput.Email,
 		Name:         signUpInput.Name,
-		PasswordHash: string(passwordHash[:]),
+		PasswordHash: string(passwordHash),
 	}
 	emailVerificationToken, err := signEmailVerificationToken(user)
 	if err != nil {

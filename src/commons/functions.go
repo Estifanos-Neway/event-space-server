@@ -2,9 +2,12 @@ package commons
 
 import (
 	"bytes"
+	"fmt"
 	"net/mail"
 	"strconv"
 	"text/template"
+
+	"crypto/sha256"
 
 	"github.com/estifanos-neway/event-space-server/src/env"
 	"gopkg.in/gomail.v2"
@@ -51,4 +54,10 @@ func SendEmail(to string, plainContent *string, templatePath *string, data *any,
 		return nil
 	}
 	return nil
+}
+
+func Hash(data string) string {
+	hashedByte := sha256.Sum256([]byte(data))
+	hashedString := fmt.Sprintf("%v", hashedByte[:])
+	return hashedString
 }
