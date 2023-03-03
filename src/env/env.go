@@ -2,8 +2,6 @@ package env
 
 import "os"
 
-
-
 type EnvVars struct {
 	HASURA_GRAPHQL_ADMIN_SECRET string
 	GRAPHQL_SERVER_URL          string
@@ -19,7 +17,7 @@ type EnvVars struct {
 
 var Env EnvVars
 
-func InitEnv(){
+func InitEnv() {
 	Env = EnvVars{
 		HASURA_GRAPHQL_ADMIN_SECRET: os.Getenv("HASURA_GRAPHQL_ADMIN_SECRET"),
 		GRAPHQL_SERVER_URL:          os.Getenv("GRAPHQL_SERVER_URL"),

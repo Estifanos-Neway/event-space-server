@@ -45,7 +45,7 @@ func SendEmail(to string, plainContent *string, templatePath *string, data *any,
 	if err != nil {
 		return err
 	}
-	d := gomail.NewDialer(env.Env.SMTP_HOST, int(port), "user", "123456")
+	d := gomail.NewDialer(env.Env.SMTP_HOST, int(port), env.Env.SMTP_USERNAME, env.Env.SMTP_PASSWORD)
 
 	if err := d.DialAndSend(m); err != nil {
 		return nil

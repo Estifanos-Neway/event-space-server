@@ -1,6 +1,6 @@
 package types
 
-type Response struct {
+type SimpleResponse struct {
 	Code    int
 	Message string
 }

@@ -9,10 +9,10 @@ import (
 	types "github.com/estifanos-neway/event-space-server/src/types"
 )
 
-func SignupRepo(signUpInput types.SignUpInput) types.Response {
+func SignupRepo(signUpInput types.SignUpInput) types.SimpleResponse {
 	// validate correctness
 	if err := signUpInput.IsValidSignInInput(); err != nil {
-		return types.Response{
+		return types.SimpleResponse{
 			Code:    400,
 			Message: err.Error(),
 		}
@@ -20,12 +20,12 @@ func SignupRepo(signUpInput types.SignUpInput) types.Response {
 	// validate uniqueness
 	if existingUser, err := getUserByEmail(signUpInput.Email); err != nil {
 		log.Println("usersByEmail", err)
-		return types.Response{
+		return types.SimpleResponse{
 			Code:    500,
 			Message: commons.InternalError,
 		}
 	} else if existingUser.Email == signUpInput.Email {
-		return types.Response{
+		return types.SimpleResponse{
 			Code:    400,
 			Message: commons.InternalError,
 		}
@@ -40,7 +40,7 @@ func SignupRepo(signUpInput types.SignUpInput) types.Response {
 	emailVerificationToken, err := signEmailVerificationToken(user)
 	if err != nil {
 		log.Println("signEmailVerificationToken", err)
-		return types.Response{
+		return types.SimpleResponse{
 			Code:    500,
 			Message: commons.InternalError,
 		}
@@ -49,14 +49,14 @@ func SignupRepo(signUpInput types.SignUpInput) types.Response {
 	content := env.Env.EMAIL_VERIFICATION_URL + emailVerificationToken
 	if err := commons.SendEmail(signUpInput.Email, &content, nil, nil, &subject, nil); err != nil {
 		log.Println("SendEmail", err)
-		return types.Response{
+		return types.SimpleResponse{
 			Code:    500,
 			Message: commons.InternalError,
 		}
 	}
 	// return token
-	return types.Response{
-		Code:    201,
-		Message: commons.No_Content,
+	return types.SimpleResponse{
+		Code:    200,
+		Message: commons.Ok,
 	}
 }
