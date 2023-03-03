@@ -8,15 +8,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RefreshHandler(c *gin.Context) {
+func SignOutHandler(c *gin.Context) {
 	var body struct{ RefreshToken string }
 	if err := c.BindJSON(&body); err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": commons.Invalid_Input})
 		return
 	}
-	if code, userLogin, message := repos.RefreshRepo(body.RefreshToken); userLogin == nil {
-		c.IndentedJSON(code, gin.H{"message": message})
-	} else {
-		c.IndentedJSON(code, *userLogin)
-	}
+	code, message := repos.SignOutRepo(body.RefreshToken)
+	c.IndentedJSON(code, gin.H{"message": message})
 }

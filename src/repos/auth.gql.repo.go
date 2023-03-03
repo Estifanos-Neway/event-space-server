@@ -88,3 +88,22 @@ func refreshTokenExists(token string) (bool, error) {
 	}
 	return query.SessionRefreshTokens[0].Id != "", nil
 }
+
+func DeleteRefreshToken(token string) error {
+	mutation := deleteSessionRefreshTokensMutation{}
+	variables := map[string]interface{}{
+		"token": token,
+	}
+	if err := gqClient.Mutate(context.Background(), &mutation, variables); err != nil {
+		return err
+	}
+	return nil
+}
+
+type deleteSessionRefreshTokensMutation struct {
+	DeleteSessionRefreshTokens struct {
+		Returning []struct {
+			Id string
+		}
+	} `graphql:"deleteSessionRefreshTokens(where:{token:{_eq:$token}})"`
+}

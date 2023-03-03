@@ -20,6 +20,7 @@ func main() {
 	router.POST("/verify-signup", handlers.VerifySignUpHandler)
 	router.POST("/signin", handlers.SignInHandler)
 	router.POST("/refresh", handlers.RefreshHandler)
+	router.POST("/signout", handlers.SignOutHandler)
 
 	router.Run(":8080")
 }
