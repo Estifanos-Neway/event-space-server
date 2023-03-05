@@ -10,6 +10,9 @@ import (
 type usersByEmailQuery struct {
 	UsersByEmail types.User `graphql:"usersByEmail(args:{useremail:$useremail})"`
 }
+type usersById struct {
+	UsersById types.User `graphql:"usersByPk(id:$id)"`
+}
 
 type roundTripper struct {
 	rt http.RoundTripper
@@ -40,3 +43,5 @@ type UserLogin struct {
 	AccessToken  string `json:"accessToken"`
 	RefreshToken string `json:"refreshToken"`
 }
+
+type uuid string

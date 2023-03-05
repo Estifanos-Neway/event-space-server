@@ -37,7 +37,9 @@ func signRefreshToken(userId string) (string, error) {
 func signEmailVerificationToken(user types.User) (string, error) {
 	claims := emailVerificationClaims{
 		user,
-		jwt.RegisteredClaims{},
+		jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(commons.EmailVerificationExpiresAfter)),
+		},
 	}
 	return signJwt(claims, env.Env.JWT_SECRETE)
 }

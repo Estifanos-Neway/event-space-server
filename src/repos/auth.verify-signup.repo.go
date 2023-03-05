@@ -36,7 +36,7 @@ func VerifySignupRepo(verificationToken string) (int, *UserLogin, string) {
 		RefreshToken: refreshToken,
 	}
 
-	if err = insertSessionRefreshToken(refreshToken); err != nil {
+	if err = insertSessionRefreshToken(refreshToken, uuid(user.Id)); err != nil {
 		log.Println("insertSessionRefreshToken", err)
 		return 500, nil, InternalError
 	}

@@ -13,6 +13,7 @@ type EnvVars struct {
 	SMTP_PASSWORD               string
 	EMAIL_FROM                  string
 	EMAIL_VERIFICATION_URL      string
+	TICKET_URL                  string
 }
 
 var Env EnvVars
@@ -29,5 +30,6 @@ func InitEnv() {
 		SMTP_PASSWORD:               os.Getenv("SMTP_PASSWORD"),
 		EMAIL_FROM:                  os.Getenv("EMAIL_FROM"),
 		EMAIL_VERIFICATION_URL:      os.Getenv("EMAIL_VERIFICATION_URL"),
+		TICKET_URL:                  os.Getenv("TICKET_URL"),
 	}
 }

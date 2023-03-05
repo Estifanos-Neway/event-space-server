@@ -35,6 +35,19 @@ func getUserByEmail(email string) (types.User, error) {
 	return query.UsersByEmail, nil
 }
 
+func getUserById(id uuid) (types.User, error) {
+	query := usersById{}
+	variables := map[string]interface{}{
+		"id": id,
+	}
+
+	if err := gqClient.Query(context.Background(), &query, variables); err != nil {
+		return query.UsersById, err
+	}
+
+	return query.UsersById, nil
+}
+
 func insertUser(user types.User) (*types.User, error) {
 	mutation := insertUserMutation{}
 	variables := map[string]interface{}{
@@ -55,10 +68,11 @@ type insertUserMutation struct {
 	} `graphql:"insertUsersOne(object:{email:$email,name:$name,passwordHash:$passwordHash })"`
 }
 
-func insertSessionRefreshToken(token string) error {
+func insertSessionRefreshToken(token string, userId uuid) error {
 	mutation := insertSessionRefreshTokenMutation{}
 	variables := map[string]interface{}{
-		"token": token,
+		"token":  token,
+		"userId": userId,
 	}
 	if err := gqClient.Mutate(context.Background(), &mutation, variables); err != nil {
 		return err
@@ -69,7 +83,7 @@ func insertSessionRefreshToken(token string) error {
 type insertSessionRefreshTokenMutation struct {
 	InsertSessionRefreshTokensOne struct {
 		Id string
-	} `graphql:"insertSessionRefreshTokensOne(object:{token:$token })"`
+	} `graphql:"insertSessionRefreshTokensOne(object:{token:$token, userId:$userId })"`
 }
 
 type sessionRefreshTokensQuery struct {
@@ -86,7 +100,7 @@ func refreshTokenExists(token string) (bool, error) {
 	if err := gqClient.Query(context.Background(), &query, variables); err != nil {
 		return false, err
 	}
-	return query.SessionRefreshTokens[0].Id != "", nil
+	return len(query.SessionRefreshTokens) > 0 && query.SessionRefreshTokens[0].Id != "", nil
 }
 
 func DeleteRefreshToken(token string) error {

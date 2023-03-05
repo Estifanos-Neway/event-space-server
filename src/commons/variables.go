@@ -11,5 +11,6 @@ const Invalid_Input = "Invalid_Input"
 const Not_Found = "Not_Found"
 
 // jwt tokens
-const AccessTokenExpiresAfter time.Duration = 20 * time.Minute
+const AccessTokenExpiresAfter time.Duration = 60 * time.Minute
 const RefreshTokenExpiresAfter time.Duration = 1440 * time.Hour
+const EmailVerificationExpiresAfter time.Duration = 30 * time.Minute

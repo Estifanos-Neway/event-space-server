@@ -1,7 +1,6 @@
 package repos
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/estifanos-neway/event-space-server/src/commons"
@@ -33,7 +32,6 @@ func SignUpRepo(signUpInput types.SignUpInput) (int, string) {
 		log.Println("signEmailVerificationToken", err)
 		return 500, InternalError
 	}
-	fmt.Println(emailVerificationToken)
 	subject := "Email Verification"
 	content := env.Env.EMAIL_VERIFICATION_URL + emailVerificationToken
 	if err := commons.SendEmail(signUpInput.Email, &content, nil, nil, &subject, nil); err != nil {

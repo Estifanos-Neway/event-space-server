@@ -2,14 +2,17 @@ package commons
 
 import (
 	"bytes"
+	"encoding/base64"
 	"fmt"
 	"net/mail"
+	"os"
 	"strconv"
 	"text/template"
 
 	"crypto/sha256"
 
 	"github.com/estifanos-neway/event-space-server/src/env"
+	"github.com/skip2/go-qrcode"
 	"gopkg.in/gomail.v2"
 )
 
@@ -60,4 +63,28 @@ func Hash(data string) string {
 	hashedByte := sha256.Sum256([]byte(data))
 	hashedString := fmt.Sprintf("%v", hashedByte[:])
 	return hashedString
+}
+
+func CreateQrCode(text, path string) error {
+	return qrcode.WriteFile(text, qrcode.Medium, 256, path)
+}
+
+func SaveFileFromBinary(base64Str, toPath string) error {
+	dec, err := base64.StdEncoding.DecodeString(base64Str)
+	if err != nil {
+		return err
+	}
+	file, err := os.Create(toPath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	if _, err := file.Write(dec); err != nil {
+		return err
+	}
+	if err := file.Sync(); err != nil {
+		return err
+	}
+	return nil
 }

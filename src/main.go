@@ -8,19 +8,19 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var Aaa int = 8
-
 func main() {
 	godotenv.Load()
 	env.InitEnv()
 	router := gin.Default()
 	router.Use(cors.Default())
-	router.Static("/static", "./public")
+	router.Static("/static", "./static")
 	router.POST("/signup", handlers.SignUpHandler)
 	router.POST("/verify-signup", handlers.VerifySignUpHandler)
 	router.POST("/signin", handlers.SignInHandler)
 	router.POST("/refresh", handlers.RefreshHandler)
 	router.POST("/signout", handlers.SignOutHandler)
+	router.POST("/ticket-sell", handlers.TicketSellHandler)
+	router.POST("/file-upload", handlers.FileUploadHandler)
 
 	router.Run(":8080")
 }
