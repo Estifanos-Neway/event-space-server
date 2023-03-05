@@ -5,10 +5,11 @@ import "time"
 var MinPasswordLength int = 6
 
 // HTTP response messages
-const No_Content = "No_Content"
+const NoContent = "No_Content"
 const Ok = "OK"
-const Invalid_Input = "Invalid_Input"
-const Not_Found = "Not_Found"
+const InvalidInput = "Invalid_Input"
+const NotFound = "Not_Found"
+const InternalError = "Internal_Error"
 
 // jwt tokens
 const AccessTokenExpiresAfter time.Duration = 60 * time.Minute

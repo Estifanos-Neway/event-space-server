@@ -11,7 +11,7 @@ import (
 func VerifySignUpHandler(c *gin.Context) {
 	var body struct{ VerificationToken string }
 	if err := c.BindJSON(&body); err != nil {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": commons.Invalid_Input})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": commons.InvalidInput})
 		return
 	}
 	if code, userLogin, message := repos.VerifySignupRepo(body.VerificationToken); userLogin == nil {

@@ -17,7 +17,7 @@ func FileUploadHandler(c *gin.Context) {
 		Extension string `json:"extension"`
 	}
 	if err := c.BindJSON(&body); err != nil {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": commons.Invalid_Input})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": commons.InvalidInput})
 		return
 	}
 	var toPath string
@@ -33,6 +33,7 @@ func FileUploadHandler(c *gin.Context) {
 	if fileName == "" {
 		fileName = uuid.New().String() + body.Extension
 	}
+	toPath += fileName
 	code, message := repos.FileUploadRepo(body.Base64Str, toPath)
 	if code != 200 {
 		c.IndentedJSON(code, gin.H{"message": message})

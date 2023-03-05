@@ -1,6 +1,10 @@
 package repos
 
-import "log"
+import (
+	"log"
+
+	"github.com/estifanos-neway/event-space-server/src/commons"
+)
 
 func RefreshRepo(refreshToken string) (int, *UserLogin, string) {
 	userId, err := verifyRefreshToken(refreshToken)
@@ -12,7 +16,7 @@ func RefreshRepo(refreshToken string) (int, *UserLogin, string) {
 	tokenExist, err = refreshTokenExists(refreshToken)
 	if err != nil {
 		log.Println("refreshTokenExists", err)
-		return 500, nil, InternalError
+		return 500, nil, commons.InternalError
 	}
 	if !tokenExist {
 		return 400, nil, invalidToken
@@ -22,7 +26,7 @@ func RefreshRepo(refreshToken string) (int, *UserLogin, string) {
 	accessToken, err = signAccessToken(userId)
 	if err != nil {
 		log.Println("signAccessToken", err)
-		return 500, nil, InternalError
+		return 500, nil, commons.InternalError
 	}
 	userLogin := UserLogin{
 		AccessToken:  accessToken,

@@ -16,7 +16,7 @@ func SignUpRepo(signUpInput types.SignUpInput) (int, string) {
 	// validate uniqueness
 	if existingUser, err := getUserByEmail(signUpInput.Email); err != nil {
 		log.Println("usersByEmail", err)
-		return 500, InternalError
+		return 500, commons.InternalError
 	} else if existingUser.Email == signUpInput.Email {
 		return 409, emailAlreadyExist
 	}
@@ -30,13 +30,13 @@ func SignUpRepo(signUpInput types.SignUpInput) (int, string) {
 	emailVerificationToken, err := signEmailVerificationToken(user)
 	if err != nil {
 		log.Println("signEmailVerificationToken", err)
-		return 500, InternalError
+		return 500, commons.InternalError
 	}
 	subject := "Email Verification"
 	content := env.Env.EMAIL_VERIFICATION_URL + emailVerificationToken
 	if err := commons.SendEmail(signUpInput.Email, &content, nil, nil, &subject, nil); err != nil {
 		log.Println("SendEmail", err)
-		return 500, InternalError
+		return 500, commons.InternalError
 	}
 	// return token
 	return 200, commons.Ok

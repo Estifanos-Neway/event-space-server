@@ -13,7 +13,7 @@ import (
 func SignInHandler(c *gin.Context) {
 	var signInInput types.SignInInput
 	if err := c.BindJSON(&signInInput); err != nil {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": commons.Invalid_Input})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": commons.InvalidInput})
 		return
 	}
 	signInInput.Email = strings.ToLower(signInInput.Email)

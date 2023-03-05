@@ -11,7 +11,7 @@ import (
 func TicketSellHandler(c *gin.Context) {
 	event := newTicketEvent{}
 	if err := c.BindJSON(&event); err != nil {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": commons.Invalid_Input})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": commons.InvalidInput})
 		return
 	}
 	code, message := repos.TicketSellRepo(event.Event.Data.New)
