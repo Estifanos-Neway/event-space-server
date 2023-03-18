@@ -2,6 +2,7 @@ package types
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/estifanos-neway/event-space-server/src/commons"
 )
@@ -17,8 +18,8 @@ func (this SignInInput) IsValidSignInInput() error {
 		return errors.New("Invalid_Email")
 	}
 	this.Email = email
-	if len(this.Password) == commons.MinPasswordLength {
-		return errors.New("Invalid_Password")
+	if len(this.Password) < commons.MinPasswordLength {
+		return errors.New(fmt.Sprintf("Password_Must_Be_At_Least_%v_Characters", commons.MinPasswordLength))
 	}
 	return nil
 }

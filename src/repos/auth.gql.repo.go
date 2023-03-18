@@ -4,7 +4,6 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/estifanos-neway/event-space-server/src/env"
 	"github.com/estifanos-neway/event-space-server/src/types"
 	"github.com/hasura/go-graphql-client"
 )
@@ -18,7 +17,7 @@ var httpClient *http.Client = &http.Client{
 var gqClient = graphql.NewClient(GRAPHQL_SERVER_URL, httpClient)
 
 func (rt roundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
-	req.Header.Add("x-hasura-admin-secret", env.Env.HASURA_GRAPHQL_ADMIN_SECRET)
+	req.Header.Add("x-hasura-admin-secret", "18b46927357c0eb211521382560385e86953d3cf981b7a4980a7df525247e4ce")
 	return rt.rt.RoundTrip(req)
 }
 

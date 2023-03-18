@@ -20,6 +20,6 @@ func SignInHandler(c *gin.Context) {
 	if code, userLogin, message := repos.SignInRepo(signInInput); userLogin == nil {
 		c.IndentedJSON(code, gin.H{"message": message})
 	} else {
-		c.IndentedJSON(code, gin.H{"userLogIn": *userLogin})
+		c.IndentedJSON(code, gin.H{"message": message, "userLogIn": *userLogin})
 	}
 }

@@ -20,14 +20,15 @@ func FileUploadHandler(c *gin.Context) {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": commons.InvalidInput})
 		return
 	}
+	const rootImagePath = "static/images/"
 	var toPath string
 	switch body.Category {
 	case "event-image":
-		toPath = "static/images/events/"
+		toPath = rootImagePath + "events/"
 	case "avatar-image":
-		toPath = "static/images/avatars/"
+		toPath = rootImagePath + "avatars/"
 	default:
-		toPath = "static/images/others/"
+		toPath = rootImagePath + "others/"
 	}
 	fileName := body.FileName
 	if fileName == "" {
@@ -39,6 +40,6 @@ func FileUploadHandler(c *gin.Context) {
 		c.IndentedJSON(code, gin.H{"message": message})
 		return
 	}
-	c.IndentedJSON(code, gin.H{"filePath": toPath})
+	c.IndentedJSON(code, gin.H{"message": message, "filePath": toPath})
 
 }

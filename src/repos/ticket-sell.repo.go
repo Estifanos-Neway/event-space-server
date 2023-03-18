@@ -4,7 +4,6 @@ import (
 	"log"
 
 	"github.com/estifanos-neway/event-space-server/src/commons"
-	"github.com/estifanos-neway/event-space-server/src/env"
 	"github.com/estifanos-neway/event-space-server/src/types"
 )
 
@@ -16,8 +15,8 @@ func TicketSellRepo(newTicket types.Ticket) (int, string) {
 		return 500, commons.InternalError
 	}
 	// create qr code
-	qrUrl := env.Env.TICKET_URL + newTicket.Id
-	qrPath := "public/images/ticket-qr-codes/" + newTicket.Id + ".png"
+	qrUrl := newTicket.Id
+	qrPath := "static/images/ticket-qr-codes/" + newTicket.Id + ".png"
 	if err := commons.CreateQrCode(qrUrl, qrPath); err != nil {
 		log.Println("CreateQrCode", err)
 		return 500, commons.InternalError

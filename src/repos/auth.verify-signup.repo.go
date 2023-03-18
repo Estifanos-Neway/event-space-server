@@ -44,5 +44,5 @@ func VerifySignupRepo(verificationToken string) (int, *UserLogin, string) {
 		log.Println("insertSessionRefreshToken", err)
 		return 500, nil, commons.InternalError
 	}
-	return 200, &userLogin, ""
+	return 200, &userLogin, commons.Ok
 }

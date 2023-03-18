@@ -17,6 +17,6 @@ func RefreshHandler(c *gin.Context) {
 	if code, userLogin, message := repos.RefreshRepo(body.RefreshToken); userLogin == nil {
 		c.IndentedJSON(code, gin.H{"message": message})
 	} else {
-		c.IndentedJSON(code, gin.H{"userLogIn": *userLogin})
+		c.IndentedJSON(code, gin.H{"message": message, "userLogIn": *userLogin})
 	}
 }

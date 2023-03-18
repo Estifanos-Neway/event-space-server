@@ -32,5 +32,5 @@ func RefreshRepo(refreshToken string) (int, *UserLogin, string) {
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}
-	return 200, &userLogin, ""
+	return 200, &userLogin, commons.Ok
 }

@@ -12,6 +12,6 @@ const NotFound = "Not_Found"
 const InternalError = "Internal_Error"
 
 // jwt tokens
-const AccessTokenExpiresAfter time.Duration = 60 * time.Minute
+const AccessTokenExpiresAfter time.Duration = 45 * time.Minute
 const RefreshTokenExpiresAfter time.Duration = 1440 * time.Hour
 const EmailVerificationExpiresAfter time.Duration = 30 * time.Minute

@@ -1,6 +1,7 @@
 package repos
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/estifanos-neway/event-space-server/src/commons"
@@ -38,6 +39,7 @@ func SignUpRepo(signUpInput types.SignUpInput) (int, string) {
 		log.Println("SendEmail", err)
 		return 500, commons.InternalError
 	}
+	fmt.Println(content)
 	// return token
 	return 200, commons.Ok
 }

@@ -52,7 +52,7 @@ func SendEmail(to string, plainContent *string, templatePath *string, data *any,
 		return err
 	}
 	d := gomail.NewDialer(env.Env.SMTP_HOST, int(port), env.Env.SMTP_USERNAME, env.Env.SMTP_PASSWORD)
-
+	// fmt.Println(d)
 	if err := d.DialAndSend(m); err != nil {
 		return nil
 	}
