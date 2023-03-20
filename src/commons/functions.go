@@ -24,7 +24,7 @@ func ParseEmail(address string) (string, error) {
 	}
 }
 
-func SendEmail(to string, plainContent *string, templatePath *string, data *any, subject *string, attachment *string) error {
+func SendEmail(to string, plainContent *string, templatePath *string, data any, subject *string, attachment *string) error {
 	m := gomail.NewMessage()
 	m.SetHeader("From", env.Env.EMAIL_FROM)
 	m.SetHeader("To", to)
@@ -34,7 +34,7 @@ func SendEmail(to string, plainContent *string, templatePath *string, data *any,
 		var body bytes.Buffer
 		bodyTemplate, err := template.ParseFiles(*templatePath)
 		if err != nil {
-			return nil
+			return err
 		}
 		if err := bodyTemplate.Execute(&body, data); err != nil {
 			return err
@@ -54,7 +54,7 @@ func SendEmail(to string, plainContent *string, templatePath *string, data *any,
 	d := gomail.NewDialer(env.Env.SMTP_HOST, int(port), env.Env.SMTP_USERNAME, env.Env.SMTP_PASSWORD)
 	// fmt.Println(d)
 	if err := d.DialAndSend(m); err != nil {
-		return nil
+		return err
 	}
 	return nil
 }

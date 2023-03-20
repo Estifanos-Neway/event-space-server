@@ -34,8 +34,15 @@ func SignUpRepo(signUpInput types.SignUpInput) (int, string) {
 		return 500, commons.InternalError
 	}
 	subject := "Email Verification"
+	// content := env.Env.EMAIL_VERIFICATION_URL + emailVerificationToken
+	// if err := commons.SendEmail(signUpInput.Email, &content, nil, nil, &subject, nil); err != nil {
+	// 	log.Println("SendEmail", err)
+	// 	return 500, commons.InternalError
+	// }
 	content := env.Env.EMAIL_VERIFICATION_URL + emailVerificationToken
-	if err := commons.SendEmail(signUpInput.Email, &content, nil, nil, &subject, nil); err != nil {
+	templateFilePath := "./assets/emails/email-verification.email.html"
+	data := struct{ VerificationLink string }{VerificationLink: content}
+	if err := commons.SendEmail(signUpInput.Email, nil, &templateFilePath, data, &subject, nil); err != nil {
 		log.Println("SendEmail", err)
 		return 500, commons.InternalError
 	}
