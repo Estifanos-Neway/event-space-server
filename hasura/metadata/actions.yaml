@@ -1,0 +1,119 @@
+actions:
+  - name: refresh
+    definition:
+      kind: synchronous
+      handler: http://172.17.0.1:8080/refresh
+      request_transform:
+        body:
+          action: transform
+          template: |-
+            {
+                "refreshToken": {{$body.input.arg.refreshToken}}
+             }
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: user
+      - role: anonymous
+  - name: signIn
+    definition:
+      kind: synchronous
+      handler: http://172.17.0.1:8080/signin
+      request_transform:
+        body:
+          action: transform
+          template: |-
+            {
+                "email": {{$body.input.arg.email}},
+                "password": {{$body.input.arg.password}}
+            }
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: user
+      - role: anonymous
+  - name: signOut
+    definition:
+      kind: synchronous
+      handler: http://172.17.0.1:8080/signout
+      request_transform:
+        body:
+          action: transform
+          template: "{\n    \"refreshToken\": {{$body.input.arg.refreshToken}}\n \n}"
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: user
+      - role: anonymous
+  - name: signUp
+    definition:
+      kind: synchronous
+      handler: http://172.17.0.1:8080/signup
+      request_transform:
+        body:
+          action: transform
+          template: |-
+            {
+              "name": {{$body.input.arg.name}},
+              "email": {{$body.input.arg.email}},
+              "password": {{$body.input.arg.password}}
+            }
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: anonymous
+      - role: user
+  - name: uploadFile
+    definition:
+      kind: synchronous
+      handler: http://172.17.0.1:8080/file-upload
+      request_transform:
+        body:
+          action: transform
+          template: |-
+            {
+                "base64Str": {{$body.input.arg.base64Str}},
+                "category": {{$body.input.arg.category}},
+                "fileName": {{$body.input.arg.fileName}},
+                "extension": {{$body.input.arg.extension}}
+            }
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: user
+  - name: verifySignUp
+    definition:
+      kind: synchronous
+      handler: http://172.17.0.1:8080/verify-signup
+      request_transform:
+        body:
+          action: transform
+          template: |-
+            {
+              "verificationToken": {{$body.input.arg.verificationToken}}
+            }
+        template_engine: Kriti
+        version: 2
+    permissions:
+      - role: user
+      - role: anonymous
+custom_types:
+  enums: []
+  input_objects:
+    - name: SignUpInput
+    - name: VerifySignUpInput
+    - name: SignInInput
+    - name: RefreshInput
+    - name: SignOutInput
+    - name: FileUploadInput
+  objects:
+    - name: SignUpOutput
+    - name: UserSignIn
+    - name: VerifySignUpOutput
+    - name: UserLogInIn
+    - name: SignInOutput
+    - name: UserLogIn
+    - name: RefreshOutput
+    - name: SignOutOutput
+    - name: FileUploadOutput
+  scalars: []

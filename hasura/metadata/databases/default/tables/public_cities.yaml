@@ -1,0 +1,26 @@
+table:
+  name: cities
+  schema: public
+array_relationships:
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: city_id
+        table:
+          name: events
+          schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - name
+        - id
+      filter: {}
+      allow_aggregations: true
+  - role: user
+    permission:
+      columns:
+        - name
+        - id
+      filter: {}
+      allow_aggregations: true

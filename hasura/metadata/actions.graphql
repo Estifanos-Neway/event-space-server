@@ -1,0 +1,109 @@
+type Mutation {
+  refresh(
+    arg: RefreshInput!
+  ): RefreshOutput
+}
+
+type Mutation {
+  signIn(
+    arg: SignInInput!
+  ): SignInOutput
+}
+
+type Mutation {
+  signOut(
+    arg: SignOutInput!
+  ): SignOutOutput
+}
+
+type Mutation {
+  signUp(
+    arg: SignUpInput!
+  ): SignUpOutput
+}
+
+type Mutation {
+  uploadFile(
+    arg: FileUploadInput!
+  ): FileUploadOutput
+}
+
+type Mutation {
+  verifySignUp(
+    arg: VerifySignUpInput!
+  ): VerifySignUpOutput
+}
+
+input SignUpInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+input VerifySignUpInput {
+  verificationToken: String!
+}
+
+input SignInInput {
+  email: String!
+  password: String!
+}
+
+input RefreshInput {
+  refreshToken: String!
+}
+
+input SignOutInput {
+  refreshToken: String!
+}
+
+input FileUploadInput {
+  base64Str: String!
+  category: String!
+  fileName: String
+  extension: String
+}
+
+type SignUpOutput {
+  message: String
+}
+
+type UserSignIn {
+  accessToken: String!
+  refreshToken: String!
+}
+
+type VerifySignUpOutput {
+  message: String
+  userLogIn: UserLogIn
+}
+
+type UserLogInIn {
+  accessToken: String!
+  refreshToken: String!
+}
+
+type SignInOutput {
+  message: String
+  userLogIn: UserLogIn
+}
+
+type UserLogIn {
+  accessToken: String!
+  refreshToken: String!
+}
+
+type RefreshOutput {
+  message: String
+  userLogIn: UserLogInIn
+}
+
+type SignOutOutput {
+  message: String
+}
+
+type FileUploadOutput {
+  message: String
+  filePath: String
+}
+

@@ -1,0 +1,7 @@
+function:
+  name: me
+  schema: public
+configuration:
+  custom_root_fields: {}
+  session_argument: hasura_session
+comment: This function returns the current user

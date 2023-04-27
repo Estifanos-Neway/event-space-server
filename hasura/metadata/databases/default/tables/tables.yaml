@@ -1,0 +1,7 @@
+- "!include public_bookmarks.yaml"
+- "!include public_cities.yaml"
+- "!include public_events.yaml"
+- "!include public_follows.yaml"
+- "!include public_session_refresh_tokens.yaml"
+- "!include public_tickets.yaml"
+- "!include public_users.yaml"

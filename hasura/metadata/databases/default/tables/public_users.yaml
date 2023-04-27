@@ -1,0 +1,97 @@
+table:
+  name: users
+  schema: public
+array_relationships:
+  - name: bookmarks
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: bookmarks
+          schema: public
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: events
+          schema: public
+  - name: followers
+    using:
+      foreign_key_constraint_on:
+        column: follower_id
+        table:
+          name: follows
+          schema: public
+  - name: followings
+    using:
+      foreign_key_constraint_on:
+        column: followed_id
+        table:
+          name: follows
+          schema: public
+  - name: session_refresh_tokens
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: session_refresh_tokens
+          schema: public
+  - name: tickets
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: tickets
+          schema: public
+computed_fields:
+  - name: followersCount
+    definition:
+      function:
+        name: user_followers_count
+        schema: public
+  - name: followingCount
+    definition:
+      function:
+        name: user_following_count
+        schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - avatar_url
+        - member_since
+        - description
+        - email
+        - id
+        - name
+      computed_fields:
+        - followersCount
+        - followingCount
+      filter: {}
+      allow_aggregations: true
+  - role: user
+    permission:
+      columns:
+        - avatar_url
+        - member_since
+        - description
+        - email
+        - id
+        - name
+      computed_fields:
+        - followersCount
+        - followingCount
+      filter: {}
+      allow_aggregations: true
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - avatar_url
+        - description
+        - name
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null

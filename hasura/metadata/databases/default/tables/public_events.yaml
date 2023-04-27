@@ -1,0 +1,136 @@
+table:
+  name: events
+  schema: public
+object_relationships:
+  - name: city
+    using:
+      foreign_key_constraint_on: city_id
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
+array_relationships:
+  - name: bookmarks
+    using:
+      foreign_key_constraint_on:
+        column: event_id
+        table:
+          name: bookmarks
+          schema: public
+  - name: tickets
+    using:
+      foreign_key_constraint_on:
+        column: event_id
+        table:
+          name: tickets
+          schema: public
+computed_fields:
+  - name: bookmarked_by_user
+    definition:
+      function:
+        name: event_bookmarked_by_user
+        schema: public
+      session_argument: hasura_session
+      table_argument: event_row
+  - name: bookmarks_count
+    definition:
+      function:
+        name: event_bookmarks_count
+        schema: public
+  - name: distance
+    definition:
+      function:
+        name: event_distance
+        schema: public
+  - name: followed_by_user
+    definition:
+      function:
+        name: owner_followed_by_user
+        schema: public
+      session_argument: hasura_session
+      table_argument: event_row
+insert_permissions:
+  - role: user
+    permission:
+      check:
+        user_id:
+          _eq: X-Hasura-User-Id
+      set:
+        user_id: x-hasura-User-Id
+      columns:
+        - city_id
+        - date
+        - description
+        - images
+        - location
+        - price
+        - specific_address
+        - tags
+        - title
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - city_id
+        - created_at
+        - date
+        - description
+        - id
+        - images
+        - location
+        - price
+        - specific_address
+        - tags
+        - title
+        - user_id
+      computed_fields:
+        - bookmarked_by_user
+        - bookmarks_count
+        - distance
+        - followed_by_user
+      filter: {}
+      allow_aggregations: true
+  - role: user
+    permission:
+      columns:
+        - images
+        - location
+        - tags
+        - price
+        - description
+        - specific_address
+        - title
+        - created_at
+        - date
+        - city_id
+        - id
+        - user_id
+      computed_fields:
+        - bookmarked_by_user
+        - bookmarks_count
+        - distance
+        - followed_by_user
+      filter: {}
+      allow_aggregations: true
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - city_id
+        - date
+        - description
+        - images
+        - location
+        - price
+        - specific_address
+        - tags
+        - title
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      check: null
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id

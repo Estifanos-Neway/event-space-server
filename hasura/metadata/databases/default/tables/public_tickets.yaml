@@ -1,0 +1,58 @@
+table:
+  name: tickets
+  schema: public
+object_relationships:
+  - name: event
+    using:
+      foreign_key_constraint_on: event_id
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
+insert_permissions:
+  - role: user
+    permission:
+      check:
+        user_id:
+          _eq: X-Hasura-User-Id
+      set:
+        user_id: x-hasura-User-Id
+      columns:
+        - event_id
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - event_id
+        - user_id
+      filter: {}
+      allow_aggregations: true
+  - role: user
+    permission:
+      columns:
+        - created_at
+        - event_id
+        - id
+        - is_valid
+        - user_id
+      filter: {}
+      allow_aggregations: true
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - is_valid
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      check: null
+event_triggers:
+  - name: ticket-sell
+    definition:
+      enable_manual: false
+      insert:
+        columns: '*'
+    retry_conf:
+      interval_sec: 10
+      num_retries: 2
+      timeout_sec: 60
+    webhook_from_env: WEBHOOK_URL_TICKET_SELL
